@@ -1,0 +1,164 @@
+<div class="border border-gray-200 rounded-lg">
+    <!-- Tab Navigation -->
+    <div class="border-b border-gray-200">
+        <nav class="flex space-x-8 px-6" aria-label="Tabs">
+            <button *ngFor="let tab of tabs" (click)="activeTab = tab.id"
+                [class.border-amber-500]="activeTab === tab.id" [class.text-amber-600]="activeTab === tab.id"
+                [class.border-transparent]="activeTab !== tab.id" [class.text-gray-500]="activeTab !== tab.id"
+                class="py-4 px-1 border-b-2 font-medium text-sm hover:text-gray-700 hover:border-gray-300 transition-colors">
+                {{tab.label}}
+            </button>
+        </nav>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="p-6">
+        <!-- Description Tab -->
+        <div *ngIf="activeTab === 'description'" class="space-y-6">
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Mô tả sản phẩm</h3>
+                <div class="prose max-w-none text-gray-700">
+                    <p class="whitespace-pre-line">{{product.longDescription}}</p>
+                </div>
+            </div>
+
+            <!-- Materials -->
+            <div>
+                <h4 class="font-semibold text-gray-900 mb-3">Chất liệu:</h4>
+                <ul class="list-disc list-inside space-y-1 text-gray-700">
+                    <li *ngFor="let material of product.materials">{{material}}</li>
+                </ul>
+            </div>
+
+            <!-- Care Instructions -->
+            <div>
+                <h4 class="font-semibold text-gray-900 mb-3">Hướng dẫn bảo quản:</h4>
+                <ul class="list-disc list-inside space-y-1 text-gray-700">
+                    <li *ngFor="let instruction of product.careInstructions">{{instruction}}</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Specifications Tab -->
+        <div *ngIf="activeTab === 'specifications'" class="space-y-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Thông số kỹ thuật</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- General Specifications -->
+                <div>
+                    <h4 class="font-semibold text-gray-900 mb-3">Thông tin chung</h4>
+                    <dl class="space-y-2">
+                        <div *ngFor="let spec of getSpecificationEntries()"
+                            class="flex justify-between py-2 border-b border-gray-100 last:border-b-0">
+                            <dt class="font-medium text-gray-600">{{spec.key}}:</dt>
+                            <dd class="text-gray-900">{{spec.value}}</dd>
+                        </div>
+                    </dl>
+                </div>
+
+                <!-- Dimensions -->
+                <div>
+                    <h4 class="font-semibold text-gray-900 mb-3">Kích thước & Trọng lượng</h4>
+                    <dl class="space-y-2">
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <dt class="font-medium text-gray-600">Chiều rộng:</dt>
+                            <dd class="text-gray-900">{{product.dimensions.width}} cm</dd>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <dt class="font-medium text-gray-600">Chiều cao:</dt>
+                            <dd class="text-gray-900">{{product.dimensions.height}} cm</dd>
+                        </div>
+                        <div *ngIf="product.dimensions.depth"
+                            class="flex justify-between py-2 border-b border-gray-100">
+                            <dt class="font-medium text-gray-600">Chiều sâu:</dt>
+                            <dd class="text-gray-900">{{product.dimensions.depth}} cm</dd>
+                        </div>
+                        <div class="flex justify-between py-2">
+                            <dt class="font-medium text-gray-600">Trọng lượng:</dt>
+                            <dd class="text-gray-900">{{product.weight}} g</dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shipping Tab -->
+        <div *ngIf="activeTab === 'shipping'" class="space-y-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Vận chuyển & Đổi trả</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Shipping Info -->
+                <div>
+                    <h4 class="font-semibold text-gray-900 mb-4 flex items-center">
+                        <svg class="h-5 w-5 text-blue-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
+                            <path
+                                d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 004.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1V8a1 1 0 00-1-1h-3z" />
+                        </svg>
+                        Thông tin vận chuyển
+                    </h4>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Miễn phí vận chuyển:</span>
+                            <span class="text-gray-900">Đơn hàng > 1.000.000₫</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Phí vận chuyển:</span>
+                            <span class="text-gray-900">30.000₫ - 50.000₫</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Thời gian giao hàng:</span>
+                            <span class="text-gray-900">2-5 ngày làm việc</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Khu vực giao hàng:</span>
+                            <span class="text-gray-900">Toàn quốc</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Return Policy -->
+                <div>
+                    <h4 class="font-semibold text-gray-900 mb-4 flex items-center">
+                        <svg class="h-5 w-5 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Chính sách đổi trả
+                    </h4>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Thời gian đổi trả:</span>
+                            <span class="text-gray-900">7 ngày</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Điều kiện:</span>
+                            <span class="text-gray-900">Còn nguyên vẹn</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Phí đổi trả:</span>
+                            <span class="text-gray-900">Miễn phí</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Bảo hành:</span>
+                            <span class="text-gray-900">12 tháng</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Info -->
+            <div class="bg-amber-50 rounded-lg p-4 mt-6">
+                <h5 class="font-semibold text-amber-900 mb-2">Lưu ý quan trọng:</h5>
+                <ul class="space-y-1 text-sm text-amber-800">
+                    <li>• Sản phẩm thủ công có thể có sự khác biệt nhỏ về màu sắc và họa tiết</li>
+                    <li>• Thời gian chế tác: {{product.craftingTime}} từ khi xác nhận đơn hàng</li>
+                    <li>• Đóng gói cẩn thận để bảo vệ sản phẩm trong quá trình vận chuyển</li>
+                    <li>• Hỗ trợ tư vấn 24/7 qua hotline hoặc chat online</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

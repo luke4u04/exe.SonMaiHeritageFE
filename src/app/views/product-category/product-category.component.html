@@ -1,0 +1,71 @@
+<div class="min-h-screen bg-gray-50">
+      <!-- Breadcrumb -->
+      <app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb>
+      
+      <!-- Category Header -->
+      <div class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div class="text-center">
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">Sản phẩm sơn mài thủ công</h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+              Khám phá bộ sưu tập sơn mài truyền thống Việt Nam được chế tác thủ công tinh xảo, 
+              mang đến vẻ đẹp độc đáo và giá trị nghệ thuật cao.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+          <!-- Filter Sidebar -->
+          <aside class="w-full lg:w-80 flex-shrink-0">
+            <app-filter-sidebar 
+              [filterGroups]="filterGroups"
+              [selectedFilters]="selectedFilters"
+              (filtersChanged)="onFiltersChanged($event)">
+            </app-filter-sidebar>
+          </aside>
+
+          <!-- Products Section -->
+          <main class="flex-1 min-w-0">
+            <!-- Sort and Results Count -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+              <div class="text-gray-600">
+                Hiển thị <span class="font-medium text-gray-900">{{filteredProducts.length}}</span> 
+                trong tổng số <span class="font-medium text-gray-900">{{totalProducts}}</span> sản phẩm
+              </div>
+              <app-product-sort 
+                [sortOption]="currentSortOption"
+                (sortChanged)="onSortChanged($event)">
+              </app-product-sort>
+            </div>
+
+            <!-- Product Grid -->
+            <app-product-grid 
+              [products]="filteredProducts"
+              [isLoading]="isLoading"
+              (productSelected)="onProductSelected($event)"
+              (addToCart)="onAddToCart($event)">
+            </app-product-grid>
+
+            <!-- Load More Button -->
+            <div class="text-center mt-12" *ngIf="hasMoreProducts">
+              <button 
+                (click)="loadMoreProducts()"
+                [disabled]="isLoadingMore"
+                class="bg-amber-600 hover:bg-amber-700 text-white px-8 py-3 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                <span *ngIf="!isLoadingMore">Xem thêm sản phẩm</span>
+                <span *ngIf="isLoadingMore" class="flex items-center justify-center">
+                  <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Đang tải...
+                </span>
+              </button>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>

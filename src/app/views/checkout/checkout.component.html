@@ -1,0 +1,274 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900">Thanh toán</h1>
+      <p class="text-gray-600 mt-2">Vui lòng điền thông tin giao hàng để hoàn tất đơn hàng</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Shipping Information Form -->
+      <div class="lg:col-span-2">
+        <div class="bg-white rounded-lg shadow p-6">
+          <h2 class="text-xl font-semibold text-gray-900 mb-6">Thông tin giao hàng</h2>
+          
+          <form (ngSubmit)="onSubmit()" #checkoutForm="ngForm" (submit)="onSubmit(); $event.preventDefault()">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Full Name -->
+              <div class="md:col-span-2">
+                <label for="fullName" class="block text-sm font-medium text-gray-700 mb-2">
+                  Họ và tên <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  [(ngModel)]="shippingInfo.fullName"
+                  required
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Nhập họ và tên">
+              </div>
+
+              <!-- Phone -->
+              <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
+                  Số điện thoại <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  [(ngModel)]="shippingInfo.phone"
+                  required
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Nhập số điện thoại">
+              </div>
+
+              <!-- Email -->
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                  Email <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  [(ngModel)]="shippingInfo.email"
+                  required
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Nhập địa chỉ email">
+              </div>
+
+              <!-- Province -->
+              <div>
+                <label for="province" class="block text-sm font-medium text-gray-700 mb-2">
+                  Tỉnh/Thành phố <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="province"
+                  name="province"
+                  [(ngModel)]="shippingInfo.province"
+                  required
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Nhập tỉnh/thành phố">
+              </div>
+
+              <!-- District -->
+              <div>
+                <label for="district" class="block text-sm font-medium text-gray-700 mb-2">
+                  Quận/Huyện <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="district"
+                  name="district"
+                  [(ngModel)]="shippingInfo.district"
+                  required
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Nhập quận/huyện">
+              </div>
+
+              <!-- Ward -->
+              <div>
+                <label for="ward" class="block text-sm font-medium text-gray-700 mb-2">
+                  Phường/Xã <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="ward"
+                  name="ward"
+                  [(ngModel)]="shippingInfo.ward"
+                  required
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Nhập phường/xã">
+              </div>
+
+              <!-- Street -->
+              <div class="md:col-span-2">
+                <label for="street" class="block text-sm font-medium text-gray-700 mb-2">
+                  Địa chỉ cụ thể <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="street"
+                  name="street"
+                  [(ngModel)]="shippingInfo.street"
+                  required
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Số nhà, tên đường...">
+              </div>
+
+              <!-- Note -->
+              <div class="md:col-span-2">
+                <label for="note" class="block text-sm font-medium text-gray-700 mb-2">
+                  Ghi chú (tùy chọn)
+                </label>
+                <textarea
+                  id="note"
+                  name="note"
+                  [(ngModel)]="note"
+                  rows="3"
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Ghi chú cho đơn hàng..."></textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Payment Method -->
+        <div class="bg-white rounded-lg shadow p-6 mt-6">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4">Phương thức thanh toán</h2>
+          
+          <!-- PayOS Payment -->
+          <div class="mb-4">
+            <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50" 
+                   [class]="selectedPaymentMethod === 'payos' ? 'border-blue-500 bg-blue-50' : 'border-gray-300'">
+              <input type="radio" 
+                     name="paymentMethod" 
+                     value="payos" 
+                     [(ngModel)]="selectedPaymentMethod"
+                     class="mr-3">
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <h3 class="text-sm font-medium text-gray-900">Thanh toán qua PayOS</h3>
+                  <p class="text-sm text-gray-700">Thanh toán an toàn qua VietQR với PayOS</p>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <!-- Direct Payment -->
+          <div>
+            <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50"
+                   [class]="selectedPaymentMethod === 'direct' ? 'border-green-500 bg-green-50' : 'border-gray-300'">
+              <input type="radio" 
+                     name="paymentMethod" 
+                     value="direct" 
+                     [(ngModel)]="selectedPaymentMethod"
+                     class="mr-3">
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <svg class="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <h3 class="text-sm font-medium text-gray-900">Thanh toán trực tiếp</h3>
+                  <p class="text-sm text-gray-700">Đơn hàng sẽ được xử lý và xác nhận bởi admin</p>
+                </div>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="lg:col-span-1">
+        <div class="bg-white rounded-lg shadow p-6 sticky top-8">
+          <h2 class="text-xl font-semibold text-gray-900 mb-6">Đơn hàng của bạn</h2>
+          
+          <!-- Cart Items -->
+          <div class="space-y-4 mb-6">
+            <div *ngFor="let item of cartItems" class="flex items-center space-x-3">
+              <img [src]="item.product.image" [alt]="item.product.name" 
+                   class="w-16 h-16 object-cover rounded-md">
+              <div class="flex-1 min-w-0">
+                <h3 class="text-sm font-medium text-gray-900 truncate">{{item.product.name}}</h3>
+                <p class="text-sm text-gray-500">Số lượng: {{item.quantity}}</p>
+              </div>
+              <div class="text-sm font-medium text-gray-900">
+                {{formatPrice(item.product.price * item.quantity)}}
+              </div>
+            </div>
+          </div>
+
+          <!-- Order Summary -->
+          <div class="border-t pt-4 space-y-3">
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-600">Tạm tính:</span>
+              <span class="text-gray-900">{{formatPrice(totalPrice)}}</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-600">Phí vận chuyển:</span>
+              <span class="text-green-600">Miễn phí</span>
+            </div>
+            <div class="border-t pt-3">
+              <div class="flex justify-between text-lg font-semibold">
+                <span class="text-gray-900">Tổng cộng:</span>
+                <span class="text-red-600">{{formatPrice(finalTotal)}}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="mt-6 space-y-3">
+            <!-- Payment Button -->
+            <button
+              type="button"
+              (click)="onSubmit()"
+              [disabled]="isProcessing"
+              [class]="selectedPaymentMethod === 'payos' ? 'w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center' : 'w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center'">
+              <svg *ngIf="!isProcessing" class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+              <span *ngIf="!isProcessing">
+                {{selectedPaymentMethod === 'payos' ? 'Thanh toán PayOS' : 'Đặt hàng'}}
+              </span>
+              <span *ngIf="isProcessing" class="flex items-center justify-center">
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Đang xử lý...
+              </span>
+            </button>
+            
+            <button
+              type="button"
+              (click)="goBack()"
+              [disabled]="isProcessing"
+              class="w-full bg-white border border-gray-300 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors disabled:opacity-50">
+              Quay lại giỏ hàng
+            </button>
+          </div>
+
+          <!-- Security Info -->
+          <div class="mt-6 pt-6 border-t">
+            <div class="flex items-center text-sm text-gray-500">
+              <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path>
+              </svg>
+              Thông tin của bạn được bảo mật an toàn
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

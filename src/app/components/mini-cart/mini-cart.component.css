@@ -1,0 +1,18 @@
+/* Custom scrollbar for mini cart */
+.max-h-64::-webkit-scrollbar {
+    width: 3px;
+}
+
+.max-h-64::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 2px;
+}
+
+.max-h-64::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 2px;
+}
+
+.max-h-64::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}

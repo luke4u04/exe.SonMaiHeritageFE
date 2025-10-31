@@ -1,0 +1,155 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="container mx-auto px-4">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-800 mb-2">Giỏ hàng của bạn</h1>
+      <p class="text-gray-600">Quản lý và thanh toán các sản phẩm đã chọn</p>
+    </div>
+
+    @if (cartItems.length === 0) {
+      <!-- Empty Cart State -->
+      <div class="text-center py-16">
+        <div class="text-8xl mb-6">🛒</div>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Giỏ hàng trống</h2>
+        <p class="text-gray-600 mb-8">Bạn chưa có sản phẩm nào trong giỏ hàng</p>
+        <button (click)="continueShopping()"
+                class="bg-red-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors">
+          Tiếp tục mua sắm
+        </button>
+      </div>
+    } @else {
+      <!-- Cart Content -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Cart Items -->
+        <div class="lg:col-span-2">
+          <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+            <div class="p-6 border-b">
+              <div class="flex justify-between items-center">
+                <h2 class="text-xl font-semibold text-gray-800">Sản phẩm ({{cartCount}})</h2>
+                <button (click)="clearCart()"
+                        class="text-red-600 hover:text-red-700 text-sm font-medium">
+                  Xóa tất cả
+                </button>
+              </div>
+            </div>
+
+            <div class="divide-y divide-gray-200">
+              @for (item of cartItems; track item.product.id) {
+                <div class="p-6 hover:bg-gray-50 transition-colors">
+                  <div class="flex items-start space-x-4">
+                    <!-- Product Image -->
+                    <div class="flex-shrink-0">
+                      <img [src]="item.product.image" [alt]="item.product.name"
+                           class="w-24 h-24 object-cover rounded-lg">
+                    </div>
+
+                    <!-- Product Info -->
+                    <div class="flex-1 min-w-0">
+                      <h3 class="text-lg font-medium text-gray-800 mb-2">{{item.product.name}}</h3>
+                      <p class="text-sm text-gray-500 mb-3">{{item.product.category}}</p>
+
+                      <!-- Price -->
+                      <div class="flex items-center space-x-3 mb-4">
+                        <span class="text-xl font-bold text-red-600">
+                          {{cartService.formatPrice(item.product.price)}}
+                        </span>
+                        @if (item.product.originalPrice) {
+                          <span class="text-sm text-gray-400 line-through">
+                            {{cartService.formatPrice(item.product.originalPrice)}}
+                          </span>
+                        }
+                      </div>
+
+                      <!-- Quantity Controls -->
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                          <span class="text-sm text-gray-600">Số lượng:</span>
+                          <div class="flex items-center space-x-2">
+                            <button (click)="updateQuantity(item, item.quantity - 1)"
+                                    class="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center text-sm font-medium transition-colors">
+                              -
+                            </button>
+                            <span class="w-12 text-center text-lg font-medium">{{item.quantity}}</span>
+                            <button (click)="updateQuantity(item, item.quantity + 1)"
+                                    class="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center text-sm font-medium transition-colors">
+                              +
+                            </button>
+                          </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="flex items-center space-x-3">
+                          <button (click)="addToWishlist(item)"
+                                  class="text-gray-400 hover:text-red-500 p-2 rounded-lg hover:bg-red-50 transition-colors"
+                                  title="Thêm vào yêu thích">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                          </button>
+                          <button (click)="removeItem(item)"
+                                  class="text-gray-400 hover:text-red-500 p-2 rounded-lg hover:bg-red-50 transition-colors"
+                                  title="Xóa khỏi giỏ hàng">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="lg:col-span-1">
+          <div class="bg-white rounded-xl shadow-sm p-6 sticky top-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-6">Tóm tắt đơn hàng</h3>
+
+            <!-- Order Details -->
+            <div class="space-y-4 mb-6">
+              <div class="flex justify-between text-gray-600">
+                <span>Tạm tính:</span>
+                <span>{{cartService.formatPrice(totalPrice)}}</span>
+              </div>
+              <div class="flex justify-between text-gray-600">
+                <span>Phí vận chuyển:</span>
+                <span class="text-green-600">Miễn phí</span>
+              </div>
+              <div class="border-t pt-4">
+                <div class="flex justify-between text-lg font-semibold text-gray-800">
+                  <span>Tổng cộng:</span>
+                  <span class="text-red-600">{{cartService.formatPrice(totalPrice)}}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="space-y-3">
+              <button (click)="proceedToCheckout()"
+                      class="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors">
+                Thanh toán ngay
+              </button>
+              <button (click)="continueShopping()"
+                      class="w-full bg-white border border-gray-300 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors">
+                Tiếp tục mua sắm
+              </button>
+            </div>
+
+            <!-- Security Info -->
+            <div class="mt-6 pt-6 border-t">
+              <div class="flex items-center space-x-2 text-sm text-gray-500">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                </svg>
+                <span>Thanh toán an toàn và bảo mật</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,32 @@
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h3 class="text-3xl font-bold text-gray-800 mb-4">Sản Phẩm Nổi Bật</h3>
+            <p class="text-gray-600">Những tác phẩm sơn mài được yêu thích nhất</p>
+        </div>
+
+        <!-- Loading State -->
+        <div *ngIf="isLoading()" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div *ngFor="let item of [1,2,3,4]" class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden animate-pulse">
+                <div class="w-full h-64 bg-gray-300"></div>
+                <div class="p-4">
+                    <div class="h-4 bg-gray-300 rounded mb-2"></div>
+                    <div class="h-4 bg-gray-300 rounded w-3/4 mb-3"></div>
+                    <div class="h-6 bg-gray-300 rounded w-1/2"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div *ngIf="!isLoading()" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            @for (product of featuredProducts(); track product.id) {
+            <app-product-card [product]="product" />
+            }
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="!isLoading() && featuredProducts().length === 0" class="text-center py-12">
+            <p class="text-gray-500">Không có sản phẩm nào để hiển thị</p>
+        </div>
+    </div>
+</section>

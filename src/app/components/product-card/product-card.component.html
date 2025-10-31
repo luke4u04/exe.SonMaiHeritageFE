@@ -1,0 +1,56 @@
+<div class="bg-white rounded-xl shadow-md overflow-hidden group hover:shadow-xl transition-all">
+    <div class="relative">
+        <img [src]="product.image" [alt]="product.name"
+            class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300">
+        <div class="absolute top-4 left-4">
+            @if (product.originalPrice) {
+            <span class="bg-orange-500 text-white text-sm px-2 py-1 rounded">
+                -{{Math.round((1 - product.price / product.originalPrice!) * 100)}}%
+            </span>
+            }
+        </div>
+        <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+            <button class="bg-white text-orange-500 p-2 rounded-full hover:bg-orange-500 hover:text-white"
+                (click)="addToWishlist()">
+                ❤️
+            </button>
+        </div>
+    </div>
+
+    <div class="p-6">
+        <h4 class="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">{{product.name}}</h4>
+        <p class="text-gray-500 text-sm mb-3">{{product.category}}</p>
+
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <span class="text-xl font-bold text-red-600">{{formatPrice(product.price)}}</span>
+                @if (product.originalPrice) {
+                <span
+                    class="text-sm text-gray-400 line-through">{{formatPrice(product.originalPrice)}}</span>
+                }
+            </div>
+            <button
+                class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                [disabled]="!product.quantity || product.quantity <= 0"
+                (click)="addToCart()">
+                @if (product.quantity && product.quantity > 0) {
+                  Thêm vào giỏ
+                } @else {
+                  Hết hàng
+                }
+            </button>
+        </div>
+        
+        @if (product.quantity !== undefined) {
+        <div class="mt-2 text-sm">
+            @if (product.quantity > 10) {
+                <span class="text-green-600 font-medium">Còn hàng ({{product.quantity}} sản phẩm)</span>
+            } @else if (product.quantity > 0) {
+                <span class="text-orange-600 font-medium">Chỉ còn {{product.quantity}} sản phẩm</span>
+            } @else {
+                <span class="text-red-600 font-medium">Hết hàng</span>
+            }
+        </div>
+        }
+    </div>
+</div>
